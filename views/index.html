@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>smart parking</title>
+    <style>
+        #mainImage {
+            align-content: center;
+            margin: 10px;
+            height: 400px;
+            width: 600px;
+            /* background-color: blue; */
+        }
+    </style>
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <center>Smart Car Parking<br>
+            <img id="mainImage" src="/images/scp.jpg" alt="smart car parking"><br>
+            <button id="showParkings" class="btn" >get Parkings</button>
+            <div id="result"></div>
+        </center>
+    </div>
+</body>
+<script>
+'use strict'
+    $("#showParkings").click(() => {
+        if($("#result").html()){
+            $("#result").text("");
+        }
+        $.get("http://localhost:3008/scp/get_parkings",
+            (data) => {
+                let str = "empty parkings are <br>";
+                data.result.forEach(element => {
+                    str = str + element + "<br>";
+                });
+                $("#result").append(str);
+            });
+    });
+</script>
+
+</html>

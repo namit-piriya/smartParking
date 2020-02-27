@@ -1,0 +1,24 @@
+{
+  "name": "smartcarparking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namit-piriya/smartCarParking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/namit-piriya/smartCarParking/issues"
+  },
+  "homepage": "https://github.com/namit-piriya/smartCarParking#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.1.0",
+    "mysql2-promise": "^0.1.4"
+  }
+}
