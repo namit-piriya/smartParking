@@ -13,14 +13,14 @@ module.exports.addParking = async (req, res) => {
     try {
         let result = await parking.addParking();
         return res.json({
-            success:true,
-            error:false
-        })
+            success: true,
+            error: false
+        });
     } catch (error) {
         console.log(error);
         return res.json({
-            error:true,
-            msg:"something wrong happened"
+            error: true,
+            msg: "something wrong happened"
         });
     }
 };

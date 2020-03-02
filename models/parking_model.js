@@ -62,53 +62,83 @@ class Parking {
         }
     }
 
+    // static async emptyParkingwithSlot(parkings){
+    //     parkings.
+    // }
     static async returnEmptyParkings() {
-        const query = "select distinct parking_name,latitude, longitude ,p.parking_id from parkings p inner join sensors s where p.parking_id=s.parking_id and is_empty = 1";
-        const slotQuery = "select count(*) as count,parking_id from sensors where is_empty=1 group by parking_id";
-        let result;
+        const query = `select distinct parking_name,latitude, longitude ,p.parking_id, s.sensor_id from parkings p inner join sensors s where p.parking_id=s.parking_id and is_empty = 1`;
+        // const slotQuery = "select count(*) as count,parking_id from sensors where is_empty=1 group by parking_id";
+        const slotidquery = "select sensor_id from sensors where parking_id = ? and is_empty =1";
+        let parkingInfo;
         try {
-            result = await pool.execute(query);
+            parkingInfo = await pool.execute(query);
         } catch (error) {
             throw error;
         }
-        let emptySlotsArray;
-        let sendResult = [];
-        try {
-            emptySlotsArray = await pool.execute(slotQuery);
-        } catch (error) {
-            throw error;
-        }
-        result[0].forEach(element => {
-            let obj = {};
-            let parkingName = element.parking_name;
-            let parkingId = element.parking_id;
-            let lat = element.latitude;
-            let long = element.longitude;
-            emptySlotsArray[0].forEach(element => {
-                if (element.parking_id == parkingId) {
-                    obj.parking_name = parkingName;
-                    obj.slots = element.count;
-                    obj.latitude = lat;
-                    obj.longitude = long;
-                }
-            });
-            sendResult.push({ ...obj });
+
+        let mapOfslots = new Map();
+
+        parkingInfo[0].forEach(element => {
+
+            console.log(element);
+            if (!mapOfslots.has(element.parking_id)) {
+                mapOfslots.set(element.parking_id,{
+                    sensorId: [element.sensor_id],
+                    parkingName: element.parking_name,
+                    latitude: element.latitude,
+                    longitude: element.longitude
+                });
+            }
+            else {
+                mapOfslots.get(element.parking_id).sensorId.push(element.sensor_id);
+            }
         });
-
+        let parkingids = mapOfslots.keys();
+        let sendResult = [];
+        // console.log(parkingids);
+        for (let [key, value] of mapOfslots) {
+            sendResult.push(value);
+          }
+        // let sendResult = [];
+        // parkingids.forEach(parkingid=>{
+        //     sendResult.push(mapOfslots.get(parkingid));
+        // });
+        console.log(sendResult);
         return sendResult;
+        // console.log(parkingInfo);
+        // let emptySlotsArray = [];
+        // let sendResult = [];
+        // await parkingInfo[0].forEach(async element => {
+        //     let obj = {};
+        //     obj.parkingName = element.parking_name;
+        //     let parkingId = element.parking_id;
+        //     obj.latitude = element.latitude;
+        //     obj.longitude = element.longitude;
+        //     let result = await pool.execute(slotidquery,[parkingId]);
+        //     // obj.parkingName = parkingName;
+        //     let sensorsArray = [];
+        //     result[0].forEach(element=>{
+        //         sensorsArray.push(element.sensor_id);
+        //     });
+        //     obj.emptySensors = sensorsArray;
+        //     console.log(obj);
+        //     sendResult.push({ ...obj });
+        // });
+        // console.log(sendResult,"is sendResult");
+        // return sendResult;
     }
-    static async getEmptySlot(parkingId) {
-        const query = "select distinct sensor_id from sensors where parking_id = ? and is_empty = 1 Limit 1";
-        let result;
-        try {
-            result = await pool.execute(query, [parkingId]);
+    // static async getEmptySlot(parkingId) {
+    //     const query = "select distinct sensor_id from sensors where parking_id = ? and is_empty = 1 Limit 1";
+    //     let result;
+    //     try {
+    //         result = await pool.execute(query, [parkingId]);
 
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-        return result[0][0].sensor_id;
-    }
+    //     } catch (error) {
+    //         console.log(error);
+    //         throw error;
+    //     }
+    //     return result[0][0].sensor_id;
+    // }
     static async getParkingId() {
         const query = "select count(*) as count from parkings";
         let result = await pool.execute(query);

@@ -49,17 +49,18 @@ module.exports.bookSlot = async (req, res) => {
     let carno = req.body.carno;
     let name = req.body.name;
     let parkingId = req.body.parkingId;
+    let sensorId = req.body.sensorId;
     user = new userModel(mobileno, carno, name);
-    let emptySensorId;
-    try {
-        emptySensorId = await parkingModel.getEmptySlot(parkingId);
-    } catch (error) {
-        console.log(error);
-        return res.json({
-            err: true,
-            msg: "something wrong happened"
-        });
-    }
+    // let emptySensorId;
+    // try {
+    //     emptySensorId = await parkingModel.getEmptySlot(parkingId);
+    // } catch (error) {
+    //     console.log(error);
+    //     return res.json({
+    //         err: true,
+    //         msg: "something wrong happened"
+    //     });
+    // }
 
     let uniqueId;
     try {
@@ -82,7 +83,7 @@ module.exports.bookSlot = async (req, res) => {
 
         result = await parkingModel.changeSensorStatus({
             parkingId: parkingId,
-            sensorId: emptySensorId,
+            sensorId: sensorId,
             isEmpty: 0
         });
 
@@ -92,7 +93,7 @@ module.exports.bookSlot = async (req, res) => {
                 err: false,
                 msg: "slot booked successfully",
                 uniqueId: uniqueId,
-                slot: emptySensorId
+                slot: sensorId
             });
         else
             return res.json({
