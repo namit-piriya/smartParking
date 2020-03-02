@@ -25,9 +25,18 @@ module.exports.init = async function initialize() {
         parking_id varchar(12),
         sensor_id varchar(12) primary key ,
         is_empty Boolean,
+        car_no varchar(10) unique,
         FOREIGN KEY (parking_id) REFERENCES parkings(parking_id)
         )`
     );
+    await pool.execute(`
+        create TABLE IF NOT EXISTS users(
+            mobile_no varchar(10),
+            name varchar(25),
+            carno varchar(10),
+            unique_id varchar(13)
+        )
+    `);
 };
 
 module.exports.pool = pool;
