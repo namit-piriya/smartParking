@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>slots</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(() => {
+      let parkingId = <%= parkingId %>;
+      let slots = [<%= slotsarray %>];
+      let slotsSet = new Set();
+      slots.forEach(element => {
+        slotsSet.add(element);
+      });
+      for (let i = 1; i <= 4; i++) {
+        if (slotsSet.has(i)) {
+          $(`#${i}`).text("Available");
+        }
+        else {
+          $(`#${i}`).text("Not available")
+        }
+      }
+    })
+  </script>
+  <style>
+    /* Make the image fully responsive */
+    .carousel-inner img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg py-3 navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a href="#" class="navbar-brand">
+        <!-- Logo Image -->
+        <img src="smartparking.svg" width="180" alt="" class="d-inline-block align-middle mr-2">
+        <!-- Logo Text -->
+        <span class="text-uppercase font-weight-bold" style="margin-left: 100">A smart solution for everyone</span>
+      </a>
+
+      <div id="navbarSupportedContent" class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active"><a href="#" class="nav-link">Home <span class="sr-only">(current)</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <br><br>
+  <h1 class="display-4" style="text-align: center;">Parking Space</h1>
+  <br>
+  <div class="container-fluid" style="width :100%;">
+    <div class="row">
+      <div class="col-md-5" style="margin-left: 10%"><a href="#"><img src="slot.jpg" class="rounded"
+            style="width: 100%; height:225px;"></a>
+        <p style="text-align: center;"> SLOT1</p>
+        <p id="1"></p>
+      </div>
+      <div class="col-md-5"><a href="#"><img src="slot.jpg" class="rounded" style="width: 100%; height:225px;"></a>
+        <p style="text-align: center;"> SLOT2</p>
+        <p id="2"></p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-5" style="margin-left: 10%"><a href="#"><img src="slot.jpg" class="rounded"
+            style="width: 100%; height:225px;"></a>
+        <p style="text-align: center;"> SLOT3</p>
+        <p id="3"></p>
+      </div>
+      <div class="col-md-5"><a href="#"><img src="slot.jpg" class="rounded" style="width: 100%; height:225px;"></a>
+        <p style="text-align: center;"> SLOT4</p>
+        <p id="4"></p>
+      </div>
+    </div>
+    <br>
+  </div>
+  <script>
+  </script>
+</body>

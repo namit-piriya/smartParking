@@ -1,5 +1,5 @@
 
-const mysql = require("mysql2");
+// const mysql = require("mysql2");
 const db = require("../util/db_util");
 const pool = db.pool;
 
@@ -41,6 +41,7 @@ class Parking {
             }
         });
     }
+
     static async changeSensorStatus(obj) {
         let parkingId = obj.parkingId;
         let sensorId = obj.sensorId;
@@ -78,11 +79,17 @@ class Parking {
 
         let mapOfslots = new Map();
 
+        console.log(parkingInfo[0]);
         parkingInfo[0].forEach(element => {
 
             console.log(element);
+            // {
+            //     1:{obj},
+            //     2:{obj}
+            // }
             if (!mapOfslots.has(element.parking_id)) {
-                mapOfslots.set(element.parking_id,{
+                mapOfslots.set(element.parking_id, {
+                    parkingId: element.parking_id,
                     sensorId: [element.sensor_id],
                     parkingName: element.parking_name,
                     latitude: element.latitude,
@@ -93,39 +100,13 @@ class Parking {
                 mapOfslots.get(element.parking_id).sensorId.push(element.sensor_id);
             }
         });
-        let parkingids = mapOfslots.keys();
+        // let parkingids = mapOfslots.keys();
         let sendResult = [];
-        // console.log(parkingids);
         for (let [key, value] of mapOfslots) {
             sendResult.push(value);
-          }
-        // let sendResult = [];
-        // parkingids.forEach(parkingid=>{
-        //     sendResult.push(mapOfslots.get(parkingid));
-        // });
+        }
         console.log(sendResult);
         return sendResult;
-        // console.log(parkingInfo);
-        // let emptySlotsArray = [];
-        // let sendResult = [];
-        // await parkingInfo[0].forEach(async element => {
-        //     let obj = {};
-        //     obj.parkingName = element.parking_name;
-        //     let parkingId = element.parking_id;
-        //     obj.latitude = element.latitude;
-        //     obj.longitude = element.longitude;
-        //     let result = await pool.execute(slotidquery,[parkingId]);
-        //     // obj.parkingName = parkingName;
-        //     let sensorsArray = [];
-        //     result[0].forEach(element=>{
-        //         sensorsArray.push(element.sensor_id);
-        //     });
-        //     obj.emptySensors = sensorsArray;
-        //     console.log(obj);
-        //     sendResult.push({ ...obj });
-        // });
-        // console.log(sendResult,"is sendResult");
-        // return sendResult;
     }
     // static async getEmptySlot(parkingId) {
     //     const query = "select distinct sensor_id from sensors where parking_id = ? and is_empty = 1 Limit 1";

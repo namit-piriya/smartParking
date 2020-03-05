@@ -14,36 +14,52 @@
             width: 800px;
         }
     </style>
-    <script
-    src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <div class="container">
         <center>Smart Car Parking<br>
             <img id="mainImage" src="/images/scp.jpg" alt="smart car parking"><br>
-            <button id="showParkings" class="btn" >get Parkings</button>
+            <button id="showParkings" class="btn">get Parkings</button>
             <div id="result"></div>
         </center>
     </div>
 </body>
 <script>
-'use strict'
+    'use strict'
+    function viewslot(args) {
+        // console.log("hello in view slot");
+        let parkingId = arguments[arguments.length - 1];
+        let str = '';
+        for (let i = 0; i < arguments.length - 1; i++) {
+            str += arguments[i] + ",";
+        }
+        let url = `http://localhost:3008/scp/get_slots_page/?slots=${str}&parkingId=${parkingId}`;
+        // url += str;
+        window.location.replace(url);
+    }
     $("#showParkings").click(() => {
-        if($("#result").html()){
+        if ($("#result").html()) {
             $("#result").text("");
         }
         $.get("http://localhost:3008/scp/get_parkings",
             (data) => {
                 let str = "empty parkings are <br>";
+                let i = 1;
+
                 data.result.forEach(element => {
-                    str = str + element + "<br>";
+                    let slots = element.sensorId;
+                    let parkingId = element.parkingId;
+                    str = str + `<button class="btn" onclick = "viewslot(${slots},${parkingId})" id =${i}> 
+                         ${element.parkingName}</button>` + "&nbsp &nbsp &nbsp &nbsp &nbsp";
+                    ++i;
                 });
                 $("#result").append(str);
             });
     });
+
 </script>
 
 </html>

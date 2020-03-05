@@ -43,6 +43,7 @@ module.exports.returnAllEmptyparkings = async function (req, res) {
         });
     }
 };
+
 module.exports.bookSlot = async (req, res) => {
 
     let mobileno = req.body.mobileno;
@@ -108,4 +109,15 @@ module.exports.bookSlot = async (req, res) => {
             msg: "something wrong happened"
         });
     }
+};
+
+module.exports.returnPage = (req, res) => {
+    let slots = req.query.slots;
+    let parkingId = req.query.parkingId;
+    slots = slots.split(",");
+    let slotsarray = [];
+    for (let i = 0; i < slots.length - 1; i++) {
+        slotsarray.push(parseInt(slots[i]));
+    }
+    res.render("viewslots.ejs",{slotsarray:slotsarray,parkingId:parkingId});
 };

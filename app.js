@@ -15,6 +15,9 @@ async function initialize(){
 
 initialize();
 
+app.set('view engine','ejs');
+app.set('views','views');
+
 const port = process.env.PORT || 3008;
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
