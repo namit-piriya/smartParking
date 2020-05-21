@@ -24,9 +24,15 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.post("/admin/add_parking",admincontroller.addParking);
 app.post("/users/book_slot",mngmntcontroller.bookSlot);
+
 app.use("/scp",mngmntRoute);
-app.use("/",(req,res)=>{
+
+app.use("/index",(req,res)=>{
     res.sendFile(path.join(__dirname,"views","index.html"));
+});
+
+app.use("/",(req,res)=>{
+    res.sendFile(path.join(__dirname,"views","home.html"));
 });
 
 app.listen(port);

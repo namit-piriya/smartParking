@@ -11,7 +11,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
   <script>
+    let s;
+    function slot(sid) {
+      s = sid;
+    }
+    function book_slot() {
+      let v_no = $("#v_no").val();
+      let mob_no = $("#mob_no").val();
+      let name = $("#name").val();
+      let parkingId = <%= parkingId %>;
+      let sensorId = s;
+      let req = `http://localhost:3008/scp/book_slot?carno=${v_no}&mobileno=${mob_no}&name=${name}&parkingId=${parkingId}&sensorId=${sensorId}`;
+      console.log(req);
+      window.location.replace(req);
+    }
     $(document).ready(() => {
+
       let parkingId = <%= parkingId %>;
       let slots = [<%= slotsarray %>];
       let slotsSet = new Set();
@@ -20,10 +35,15 @@
       });
       for (let i = 1; i <= 4; i++) {
         if (slotsSet.has(i)) {
-          $(`#${i}`).text("Available");
+          $(`#${i}`).text("STATUS : Available");
+          $(`#${i}`).css("color", "green");
+
         }
         else {
-          $(`#${i}`).text("Not available")
+          $(`#${i}`).text("STATUS : Not available");
+          $(`#${i}`).css("display", "none");
+          $(`#${i}`).css("color", "red");
+
         }
       }
     })
@@ -34,6 +54,47 @@
       width: 100%;
       height: 100%;
     }
+
+    .visible {
+      visibility: visible;
+    }
+
+    .invisible {
+      visibility: hidden;
+    }
+
+    .form-dark .font-small {
+      font-size: 0.8rem;
+    }
+
+    .form-dark .md-form label {
+      color: #fff;
+    }
+
+    .form-dark input[type=email]:focus:not([readonly]) {
+      border-bottom: 1px solid #00C851;
+      -webkit-box-shadow: 0 1px 0 0 #00C851;
+      box-shadow: 0 1px 0 0 #00C851;
+    }
+
+    .form-dark input[type=email]:focus:not([readonly])+label {
+      color: #fff;
+    }
+
+    .form-dark input[type=password]:focus:not([readonly]) {
+      border-bottom: 1px solid #00C851;
+      -webkit-box-shadow: 0 1px 0 0 #00C851;
+      box-shadow: 0 1px 0 0 #00C851;
+    }
+
+    .form-dark input[type=password]:focus:not([readonly])+label {
+      color: #fff;
+    }
+
+
+    .form-dark .modal-header {
+      border-bottom: none;
+    }
   </style>
 </head>
 
@@ -42,7 +103,7 @@
     <div class="container">
       <a href="#" class="navbar-brand">
         <!-- Logo Image -->
-        <img src="smartparking.svg" width="180" alt="" class="d-inline-block align-middle mr-2">
+        <img src="/images/smartparking.svg" width="180" alt="" class="d-inline-block align-middle mr-2">
         <!-- Logo Text -->
         <span class="text-uppercase font-weight-bold" style="margin-left: 100">A smart solution for everyone</span>
       </a>
@@ -56,35 +117,108 @@
       </div>
     </div>
   </nav>
+  <!--CODE For MODEL-->
+
+  <div class="modal fade" id="darkModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog form-dark" role="document">
+      <!--Content-->
+      <div class="modal-content card card-image" style="background-image: url(/images/modal.jpg);">
+        <div class="text-white rgba-stylish-strong py-5 px-5 z-depth-4">
+          <!--Header-->
+          <div class="modal-header text-center pb-4">
+            <h3 class="modal-title w-100 white-text font-weight-bold" id="myModalLabel"><strong>Enter </strong> <a
+                class="green-text font-weight-bold"><strong>Details</strong></a></h3>
+            <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <!--Body-->
+            <div class="md-form mb-5">
+              <input type="text" id="v_no" class="form-control validate white-text">
+              <label data-error="wrong" data-success="right" for="Form-email5" style="color: blueviolet;">Vehicle
+                Number</label>
+            </div>
+
+            <div class="md-form pb-3" >
+              <input type="text" id="name" class="form-control validate white-text">
+              <label data-error="wrong" data-success="right" for="Form-pass5" style="color: blueviolet;">Name</label>
+
+            </div>
+            <div class="md-form pb-3" >
+              <input type="text" id="mob_no" class="form-control validate white-text">
+              <label data-error="wrong" data-success="right" for="Form-pass5" style="color: blueviolet;">Mobile
+                Number</label>
+
+            </div>
+
+
+            <!--Grid row-->
+            <div class="row d-flex align-items-center mb-4">
+
+              <!--Grid column-->
+              <div class="text-center mb-3 col-md-12">
+                <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1" onclick="book_slot()">BOOK
+                  SLOT</button>
+              </div>
+              <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+          </div>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
+  <!-- Modal -->
   <br><br>
   <h1 class="display-4" style="text-align: center;">Parking Space</h1>
   <br>
   <div class="container-fluid" style="width :100%;">
     <div class="row">
-      <div class="col-md-5" style="margin-left: 10%"><a href="#"><img src="slot.jpg" class="rounded"
+      <div class="col-md-5" style="margin-left: 10%"><a href="#"><img src="/images/slot.jpeg" class="rounded"
             style="width: 100%; height:225px;"></a>
         <p style="text-align: center;"> SLOT1</p>
-        <p id="1"></p>
+        <center>
+          <p id="1"></p>
+          <button id="1" class="btn btn-default btn-rounded visible" data-toggle="modal" data-target="#darkModalForm"
+            onclick="slot('1')">Book slot</button>
+        </center>
       </div>
-      <div class="col-md-5"><a href="#"><img src="slot.jpg" class="rounded" style="width: 100%; height:225px;"></a>
+      <div class="col-md-5"><a href="#"><img src="/images/slot.jpeg" class="rounded"
+            style="width: 100%; height:225px;"></a>
         <p style="text-align: center;"> SLOT2</p>
-        <p id="2"></p>
+        <center>
+          <p id="2"></p>
+          <button id="2" class="btn btn-default btn-rounded visible" data-toggle="modal" data-target="#darkModalForm"
+            onclick="slot('2')">Book slot</button>
+        </center>
       </div>
     </div>
     <br>
     <div class="row">
-      <div class="col-md-5" style="margin-left: 10%"><a href="#"><img src="slot.jpg" class="rounded"
+      <div class="col-md-5" style="margin-left: 10%"><a href="#"><img src="/images/slot.jpeg" class="rounded"
             style="width: 100%; height:225px;"></a>
         <p style="text-align: center;"> SLOT3</p>
-        <p id="3"></p>
+        <center>
+          <p id="3"></p>
+          <button id="3" class="btn btn-default btn-rounded visible" data-toggle="modal" data-target="#darkModalForm"
+            onclick="slot('3')">Book slot</button>
+        </center>
       </div>
-      <div class="col-md-5"><a href="#"><img src="slot.jpg" class="rounded" style="width: 100%; height:225px;"></a>
+      <div class="col-md-5"><a href="#"><img src="/images/slot.jpeg" class="rounded"
+            style="width: 100%; height:225px;"></a>
         <p style="text-align: center;"> SLOT4</p>
-        <p id="4"></p>
+        <center>
+          <p id="4"></p>
+          <button id="4" class="btn btn-default btn-rounded visible" data-toggle="modal" data-target="#darkModalForm"
+            onclick="slot('4')">Book slot</button>
+        </center>
       </div>
     </div>
     <br>
   </div>
-  <script>
-  </script>
 </body>

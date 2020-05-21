@@ -46,11 +46,11 @@ module.exports.returnAllEmptyparkings = async function (req, res) {
 
 module.exports.bookSlot = async (req, res) => {
 
-    let mobileno = req.body.mobileno;
-    let carno = req.body.carno;
-    let name = req.body.name;
-    let parkingId = req.body.parkingId;
-    let sensorId = req.body.sensorId;
+    let mobileno = req.query.mobileno;
+    let carno = req.query.carno;
+    let name = req.query.name;
+    let parkingId = req.query.parkingId;
+    let sensorId = req.query.sensorId;
     user = new userModel(mobileno, carno, name);
     // let emptySensorId;
     // try {
@@ -89,13 +89,14 @@ module.exports.bookSlot = async (req, res) => {
         });
 
         if (result)
-            return res.json({
-                success: true,
-                err: false,
-                msg: "slot booked successfully",
-                uniqueId: uniqueId,
-                slot: sensorId
-            });
+            // return res.json({
+            //     success: true,
+            //     err: false,
+            //     msg: "slot booked successfully",
+            //     uniqueId: uniqueId,
+            //     slot: sensorId
+            // });
+            return res.render("booked_slot.ejs", { uniqueId: uniqueId, slot: sensorId });
         else
             return res.json({
                 err: true,
@@ -119,5 +120,5 @@ module.exports.returnPage = (req, res) => {
     for (let i = 0; i < slots.length - 1; i++) {
         slotsarray.push(parseInt(slots[i]));
     }
-    res.render("viewslots.ejs",{slotsarray:slotsarray,parkingId:parkingId});
+    res.render("viewslots.ejs", { slotsarray: slotsarray, parkingId: parkingId });
 };

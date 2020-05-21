@@ -1,28 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <title>smart parking</title>
-    <style>
-        #mainImage {
-            align-content: center;
-            margin: 10px;
-            height: 400px;
-            width: 800px;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <title>Smart Parking</title>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+ 
+  <style>
+  /* Make the image fully responsive */
+  .carousel-inner img {
+      width: 100%;
+      height: 100%;
+  }
+  </style>    
 </head>
+<body style="background-color:whitesmoke">
+    
+<nav class="navbar navbar-expand-lg py-3 navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a href="#" class="navbar-brand">
+      <!-- Logo Image -->
+      <img src="smartparking.svg" width="180" alt="" class="d-inline-block align-middle mr-2">
+      <!-- Logo Text -->
+      <span class="text-uppercase font-weight-bold" style="margin-left: 100">A smart solution for everyone</span>
+    </a>
 
-<body>
+   
+    <div id="navbarSupportedContent" class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active"><a href="#" class="nav-link">Home <span class="sr-only">(current)</span></a></li>
+        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br><br>
     <div class="container">
-        <center>Smart Car Parking<br>
-            <img id="mainImage" src="/images/scp.jpg" alt="smart car parking"><br>
-            <button id="showParkings" class="btn">get Parkings</button>
+        <center><H1>Welcome to Smart Parking System</H1><br>
+            <img height="350px" id="mainImage" src="/images/scp.jpg" alt="smart car parking"><br><br>
+            <button id="showParkings" class="btn btn-info"><h5>Click here to see available Parking Areas </h5> </button>
             <div id="result"></div>
         </center>
     </div>
@@ -52,7 +73,7 @@
                 data.result.forEach(element => {
                     let slots = element.sensorId;
                     let parkingId = element.parkingId;
-                    str = str + `<button class="btn" onclick = "viewslot(${slots},${parkingId})" id =${i}> 
+                    str = str + `<button class="btn btn-success" onclick = "viewslot(${slots},${parkingId})" id =${i}> 
                          ${element.parkingName}</button>` + "&nbsp &nbsp &nbsp &nbsp &nbsp";
                     ++i;
                 });
